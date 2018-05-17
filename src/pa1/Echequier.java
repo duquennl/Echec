@@ -15,3 +15,4 @@ public class Echequier {
 			tableau[6][i] = new Pion("Noir");
 		}
 	}
+}
