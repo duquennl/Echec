@@ -1,6 +1,4 @@
 package pa1;
-import java.util.Scanner;
-
 
 public class Main {
 	public static void main(String[] args) {
@@ -9,6 +7,7 @@ public class Main {
 		while(p.estFini()){
 			p.jouer();
 		}
+		p.finDeJeu();
 //		Echequier echec = new Echequier();
 //		System.out.println("Veuillez saisir un mot :");
 //		Scanner sc = new Scanner(System.in);
