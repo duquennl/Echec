@@ -2,120 +2,92 @@ package pa1;
 
 public class Echequier {
 
-	Piece tableau[];
+	Piece tableau[][];
 
 	public Echequier(){
-		tableau = new Piece[24];
+		tableau = new Piece[8][8];
 		initialisation();
 	}
 	
 	//place les pieces
 	private void initialisation(){
-		tableau[0] = new Tour("blanc",1,1);
-		tableau[1] = new Tour("blanc",1,8);
-		tableau[2] = new Tour("noir",8,1);
-		tableau[3] = new Tour("noir",8,8);
-		
-		tableau[4] = new Cavalier("blanc",1,2);
-		tableau[5] = new Cavalier("blanc",1,7);
-		tableau[6] = new Cavalier("noir",8,2);
-		tableau[7] = new Cavalier("noir",8,7);
-		
-		tableau[8] = new Fou("blanc",1,3);
-		tableau[9] = new Fou("blanc",1,6);
-		tableau[10] = new Fou("noir",8,3);
-		tableau[11] = new Fou("noir",8,6);
-		
-		tableau[12] = new Reine("blanc",1,6);
-		tableau[13] = new Roi("blanc",1,5);
-		
-		tableau[14] = new Reine("noir",8,6);
-		tableau[15] = new Roi("noir",8,5);
-	
-		tableau[16] = new Pion("blanc",2,1);
-		tableau[17] = new Pion("blanc",2,2);
-		tableau[18] = new Pion("blanc",2,3);
-		tableau[19] = new Pion("blanc",2,4);
-		tableau[20] = new Pion("blanc",2,5);
-		tableau[21] = new Pion("blanc",2,6);
-		tableau[22] = new Pion("blanc",2,7);
-		tableau[24] = new Pion("blanc",2,8);
+		tableau[0][0] = new Tour("blanc",0,0);
+		tableau[0][1] = new Cavalier("blanc",0,1);
+		tableau[0][2] = new Fou("blanc",0,2);
+		tableau[0][3] = new Roi("blanc",0,3);
+		tableau[0][4] = new Reine("blanc",0,4);
+		tableau[0][5] = new Fou("blanc",0,5);
+		tableau[0][6] = new Cavalier("blanc",0,6);
+		tableau[0][7] = new Tour("blanc",0,7);
 
-		tableau[16] = new Pion("noir",7,1);
-		tableau[17] = new Pion("noir",7,2);
-		tableau[18] = new Pion("noir",7,3);
-		tableau[19] = new Pion("noir",7,4);
-		tableau[20] = new Pion("noir",7,5);
-		tableau[21] = new Pion("noir",7,6);
-		tableau[22] = new Pion("noir",7,7);
-		tableau[23] = new Pion("noir",7,8);
-
+		
+		tableau[7][0] = new Tour("noir",7,0);
+		tableau[7][1] = new Cavalier("noir",7,1);
+		tableau[7][2] = new Fou("noir",7,2);
+		tableau[7][3] = new Reine("noir",7,3);
+		tableau[7][4] = new Roi("noir",7,4);
+		tableau[7][5] = new Fou("noir",7,5);
+		tableau[7][6] = new Cavalier("noir",7,6);
+		tableau[7][7] = new Tour("noir",7,7);
+		
+		for(int i=0; i<8; i++){
+			tableau[1][i] = new Pion("blanc",1,i);
+			tableau[6][i] = new Pion("blanc",6,i);
 		}
+	}
 	
 	// renvoie vrai si la position est hors de l'echequier
 	private boolean positionInvalide (int x, int y) {
-		boolean verif = true;
-		if ( x >= 1 & x <= 8 & y >= 1 & y <= 8 ) { verif = false;}
-		return verif;
+		return x < 0 || x > 7 || y < 0 || y > 7;
 	}
 	
-	// cherche la piece se trouvant aux coordonnées donnees en arguments
+	// cherche la piece se trouvant aux coordonnï¿½es donnees en arguments
 	public Piece chercherPiece(int x, int y) {
-		if (positionInvalide(x,y)) { System.out.println("position de départ invalide");
-		return null;
+		if (positionInvalide(x,y)) { 
+			System.out.println("position de dï¿½part invalide");
+			return null;
 		}
-		
-		
 	
-	for (int i = 0 ; i<33 ; i++) {
-		if (tableau[i].getX()== x & tableau[i].getY() == y) {
-			return tableau[i];
-		}
-	}
-	return null;
+		return tableau[x][y];
 		
 	}
 
 	// deplace la piece qui se trouve en (x1,y1) en (x2,y2)
 	public void deplacerPiece(int x1 , int y1 , int x2 , int y2) {
-		if (positionInvalide(x1,y1)) { System.out.println("position de départ invalide");
-		return;
+		if (positionInvalide(x1,y1)) { 
+			System.out.println("position de dï¿½part invalide");
+			return;
 		}
-		if (positionInvalide(x2,y2)) { System.out.println("position d'arrivée invalide");
-		return;
+		if (positionInvalide(x2,y2)) { 
+			System.out.println("position d'arrivï¿½e invalide");
+			return;
 		}
-		boolean verif = false;
-		for (int i = 0 ; i<33 ; i++) {
-			if (tableau[i].getX()== x1 & tableau[i].getY() == y1) {
-				 tableau[i].setX(x2);
-				 tableau[i].setY(y2);
-				 verif = true;
-			}	
+		Piece p;
+		if ((p = tableau[x1][y1]) != null){
+			p.setX(x2);
+			p.setY(y2);
+			tableau[x2][y2] = p;
+			tableau[x1][y1] = null;
 		}
-		
-		if (verif == false) { System.out.println("la case est vide");
+		else { 
+			System.out.println("la case est vide");
 		}
 
 	}
 
 	// renvoie vrai si aucune piece n'occupe la case (x,y)
 	public boolean caseVide (int x, int y) {
-		for (int i = 0 ; i<33 ; i++) {
-			if (tableau[i].getX() == x & tableau[i].getY() == y) {
-				return false;
-			}
-						
-		}
-		
-		return true;
+		return tableau[x][y] == null;
 
 	}
 
-	//renvoie vrai si la case (x,y) est menacé par une piéce de la couleur donnée en argument
+	//renvoie vrai si la case (x,y) est menacï¿½ par une piï¿½ce de la couleur donnï¿½e en argument
 	public boolean caseAttaque(int x, int y, Echequier monEchequier, String couleur) {
-		for(int i=0 ; i<33;i++) {
-			if(tableau[i].deplacementValide(tableau[i].getX(), tableau[i].getY(), x, y, monEchequier) & tableau[i].getColor()==couleur) {
-				return true;
+		for(Piece[] l : tableau){
+			for(Piece p : l){
+				if (p.getColor()==couleur && p.deplacementValide(p.x, p.y, x, y, this)){
+					return true;
+				}
 			}
 		}
 		return false;
