@@ -4,11 +4,13 @@ public class Main {
 	public static void main(String[] args) {
 		Partie p = new Partie();
 		p.init();
-		while(p.estFini()){
+		while(!p.estFini()){
 			p.jouer();
 		}
 		p.finDeJeu();
-//		Echequier echec = new Echequier();
+
+		Echequier echec = new Echequier();
+		echec.affichageGrille();
 //		System.out.println("Veuillez saisir un mot :");
 //		Scanner sc = new Scanner(System.in);
 //		int str = sc.nextInt();
